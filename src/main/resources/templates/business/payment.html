@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+<body>
+<style>
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+
+    .background-contain {
+        background-image: url("https://static.vecteezy.com/system/resources/previews/002/326/623/original/black-golden-royal-luxury-background-landing-page-free-vector.jpg");
+        /* Full height */
+        height: 100%;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+<div class="background-contain d-flex justify-content-center align-items-center">
+    <div class="bg-white p-3 px-5 rounded">
+        <div class="h2 text-center text-secondary text-uppercase">HaiChanBank</div>
+        <hr>
+        <div class="text-secondary">
+            <div>Tên DN: <span th:text="${business.getName()}"></span></div>
+            <div>Khách hàng: <span th:text="${currentUser.getName()}"></span></div>
+            <div>Mã đơn hàng:
+                <th:block th:text="${payment.getPaymentID()}"/>
+            </div>
+            <div>Tổng thanh toán:
+                <th:block th:text="${#numbers.formatDecimal(payment.getAmount(),0,'COMMA',0,'POINT')}"/>
+                đ
+            </div>
+            <div>Số id tham chiếu:
+                <th:block th:text="${payment.getTransactionID()}"/>
+            </div>
+        </div>
+        <hr>
+        <input class="form-control" type="password" placeholder="Nhập mật khẩu để lấy OTP" id="auth-1">
+        <button id="auth-1-send" class="btn btn-success my-2 w-100">Gửi</button>
+        <div id="result" class="font-weight-bold font-italic mb-2 small"></div>
+        <form th:action="@{/bank/payment/save}" method="get">
+            <input class="form-control" name="otp" placeholder="OTP H-XXXXXX">
+            <input class="form-control" name="business" th:attr="value=${business.getToken()}" hidden>
+            <input class="form-control" name="transaction" th:attr="value=${payment.getTransactionID()}" hidden>
+            <button type="submit" class="btn btn-success my-2 w-100">Thanh toán</button>
+            <div class="font-weight-bold font-italic mb-2 small text-danger">
+                <th:block th:text="${message}"></th:block>
+            </div>
+        </form>
+    </div>
+</div>
+<!--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>-->
+<script th:src="@{/vendor/global/global.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#auth-1-send').click(function (e) {
+            let password = $("#auth-1").val()
+            let result = $("#result");
+            if (password === "") {
+                password = "none";
+            }
+            e.preventDefault();
+            console.log(password);
+            $.ajax({
+                url: 'http://localhost:8080/api/v8/auth-1',
+                type: 'GET',
+                // dataType: 'json',
+                data: {
+                    password: password,
+                },
+                success: function (data) {
+                    console.log(data)
+                    result.css("color", "green")
+                    result.text(data)
+                },
+                error: function () {
+                    result.css("color", "red")
+                    result.text("Anh zai sai mật khẩu rồi !")
+                }
+            });
+
+        });
+    });
+</script>
+</body>
+</html>
