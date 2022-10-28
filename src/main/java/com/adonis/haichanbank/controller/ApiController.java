@@ -9,6 +9,7 @@ import com.adonis.haichanbank.repositories.PaymentRepository;
 import com.adonis.haichanbank.services.BusinessServices;
 import com.adonis.haichanbank.services.UserServices;
 import com.adonis.haichanbank.utils.CurrentUser;
+import com.adonis.haichanbank.utils.PhoneNotification;
 import com.adonis.haichanbank.utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +79,9 @@ public class ApiController {
         int digest = gen.nextInt((999999 - 111111) + 1) + 111111;
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
-        return ResponseEntity.status(200).body("Mã OTP đã được gửi. Kiểm tra Email ");
+//        PhoneNotification phoneNotification = new PhoneNotification();
+//        phoneNotification.make(newOtp.getPhone(), "HAICHANBANK OTP:" + newOtp.getOtp());
+        return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
 
     }
 
@@ -95,5 +98,4 @@ public class ApiController {
         paymentRepository.save(payment);
         return "http:/localhost:8080/bank/payment?token=" + token + "&transaction=" + payment.getTransactionID();
     }
-
 }

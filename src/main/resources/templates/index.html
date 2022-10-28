@@ -114,7 +114,7 @@
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" id="card-value"
                                        placeholder="Số thẻ,email,sđt" aria-label=""
-                                       aria-describedby="basic-addon2">
+                                       aria-describedby="basic-addon2" required>
                                 <div class="input-group-append">
                                     <button class="btn btn-outline-secondary" style="border-radius:0!important; "
                                             type="button" id="find_card">Tìm
@@ -135,11 +135,25 @@
                                           th:field="*{message}" rows="3"
                                           th:attr="placeholder='Chuyển tiền từ '+ ${currentUser.getName()}">
                                 </textarea>
+                                <div class="input-group mb-3">
+                                    <input type="password" class="form-control" id="password"
+                                           placeholder="Nhập mật khẩu để lấy OTP" aria-label=""
+                                           aria-describedby="basic-addon2" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" style="border-radius:0!important; "
+                                                type="button" id="get_otp">Lấy OTP
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="" id="result-otp"></div>
+                                <input name="otp" placeholder="OTP" class="form-control">
                             </div>
                             <button type="submit" name="submit"
-                                    class="btn btn-primary d-block btn-lg text-uppercase">Chuyển
+                                    class="mt-2 btn btn-primary d-block btn-lg text-uppercase">Chuyển
                                 khoản
                             </button>
+                            <th:block th:text="${error}"/>
+                            <th:block th:text="${success}"/>
                         </form>
                     </div>
                 </div>
@@ -147,7 +161,7 @@
                     <div class="card">
                         <div class="card-header border-0 pb-0">
                             <div>
-                                <h4 class="card-title mb-2">TIết kiệm</h4>
+                                <h4 class="card-title mb-2">Tiết kiệm</h4>
                                 <span class="fs-12">Thống kê số dư còn lại của các ví</span>
                             </div>
                         </div>
@@ -204,6 +218,35 @@
 </content>
 <js>
     <script>
+        $(document).ready(function () {
+            $('#get_otp').click(function (e) {
+                let password = $("#password").val()
+                let result = $("#result-otp");
+                if (password === "") {
+                    password = "none";
+                }
+                e.preventDefault();
+                console.log(password);
+                $.ajax({
+                    url: 'http://localhost:8080/api/v8/auth-1',
+                    type: 'GET',
+                    // dataType: 'json',
+                    data: {
+                        password: password,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        result.css("color", "green")
+                        result.text(data)
+                    },
+                    error: function () {
+                        result.css("color", "red")
+                        result.text("Anh zai sai mật khẩu rồi !")
+                    }
+                });
+
+            });
+        });
         $(document).ready(function () {
             $('#find_card').click(function (e) {
                 e.preventDefault();
