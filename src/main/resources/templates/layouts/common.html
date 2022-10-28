@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="common(content,css,js)">
-
 <head>
 
     <meta charset="utf-8">
@@ -427,73 +426,8 @@
                             <div class="dropdown-menu dropdown-menu-end">
                                 <div id="dlab_W_Notification1" class="widget-media dlab-scroll p-3"
                                      style="height:380px;">
-                                    <ul class="timeline">
-                                        <li>
-                                            <div class="timeline-panel">
-                                                <div class="media me-2">
-                                                    <img alt="image" width="50" th:src="@{/images/avatar/1.jpg}">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="mb-1">Dr sultads Send you Photo</h6>
-                                                    <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-panel">
-                                                <div class="media me-2 media-info">
-                                                    KG
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="mb-1">Resport created successfully</h6>
-                                                    <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-panel">
-                                                <div class="media me-2 media-success">
-                                                    <i class="fa fa-home"></i>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="mb-1">Reminder : Treatment Time!</h6>
-                                                    <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-panel">
-                                                <div class="media me-2">
-                                                    <img alt="image" width="50" th:src="@{images/avatar/1.jpg}">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="mb-1">Dr sultads Send you Photo</h6>
-                                                    <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-panel">
-                                                <div class="media me-2 media-danger">
-                                                    KG
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="mb-1">Resport created successfully</h6>
-                                                    <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="timeline-panel">
-                                                <div class="media me-2 media-primary">
-                                                    <i class="fa fa-home"></i>
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="mb-1">Reminder : Treatment Time!</h6>
-                                                    <small class="d-block">29 July 2020 - 02:26 PM</small>
-                                                </div>
-                                            </div>
-                                        </li>
+                                    <ul class="timeline" id="notification">
+
                                     </ul>
                                 </div>
                                 <a class="all-notification" href="javascript:void(0);">Xem tất cả thông báo <i
@@ -556,8 +490,8 @@
                     <ul aria-expanded="false">
                         <li><a th:href="@{/bank}">Trang chủ</a></li>
                         <li><a th:href="@{/bank/wallet}">Tài khoản</a></li>
-<!--                        <li><a th:href="page-invoices.html">Hóa đơn</a></li>-->
-<!--                        <li><a th:href="@{/bank/card}">Thẻ</a></li>-->
+                        <!--                        <li><a th:href="page-invoices.html">Hóa đơn</a></li>-->
+                        <!--                        <li><a th:href="@{/bank/card}">Thẻ</a></li>-->
                     </ul>
                 </li>
             </ul>
@@ -631,6 +565,38 @@
             dezSettingsOptions.version = 'dark';
             new dezSettings(dezSettingsOptions);
         }, 500)
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: 'http://localhost:8080/api/v8/notifications',
+            type: 'GET',
+            // dataType: 'json',
+            success: function (data) {
+                data.forEach(function (item) {
+                    console.log(item.title)
+                    console.log(item.message)
+                    let list = document.createElement("li");
+                    let a = document.createElement("a")
+                    a.href = "#"
+                    let title = document.createElement("div")
+                    title.innerText = item.title
+                    title.style.fontWeight = "bold"
+                    let message = document.createElement("div")
+                    message.innerText = item.message.substring(0, 60) + "..."
+                    a.append(title)
+                    a.append(message)
+                    list.append(a)
+                    list.append(document.createElement("hr"))
+                    let notification = document.getElementById("notification")
+                    notification.append(list)
+                })
+            },
+            error: function () {
+
+            }
+        });
     });
 </script>
 <th:block th:replace="${js}"></th:block>

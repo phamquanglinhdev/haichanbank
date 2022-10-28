@@ -1,9 +1,12 @@
 package com.adonis.haichanbank.controller;
 
+import com.adonis.haichanbank.dto.NotificationDto;
 import com.adonis.haichanbank.dto.UserDto;
+import com.adonis.haichanbank.models.Notification;
 import com.adonis.haichanbank.models.OTP;
 import com.adonis.haichanbank.models.Payment;
 import com.adonis.haichanbank.models.User;
+import com.adonis.haichanbank.repositories.NotificationRepository;
 import com.adonis.haichanbank.repositories.OTPRepository;
 import com.adonis.haichanbank.repositories.PaymentRepository;
 import com.adonis.haichanbank.services.BusinessServices;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -86,7 +90,14 @@ public class ApiController {
     }
 
     @GetMapping("create-payment")
-    public String createPayment(@RequestParam String token, @RequestParam String secret, @RequestParam int amount, @RequestParam String id, @RequestParam String message, @RequestParam(defaultValue = "Không có") String detail) {
+    public String createPayment(
+            @RequestParam String token,
+            @RequestParam String secret,
+            @RequestParam int amount,
+            @RequestParam String id,
+            @RequestParam String message,
+            @RequestParam(defaultValue = "Không có") String detail
+    ) {
         Payment payment = new Payment();
         payment.setStatus("pending");
         payment.setPaymentID(id);
@@ -97,5 +108,43 @@ public class ApiController {
         payment.setTransactionID(RandomString.makeNumberString(12));
         paymentRepository.save(payment);
         return "http:/localhost:8080/bank/payment?token=" + token + "&transaction=" + payment.getTransactionID();
+    }
+
+    @Autowired
+    NotificationRepository notificationRepository;
+
+    @GetMapping("notifications")
+    public ResponseEntity<List<NotificationDto>> getNotifications() {
+        User user = currentUser.get();
+        List<NotificationDto> notificationDtoList = new ArrayList<>();
+        List<Notification> notifications = notificationRepository.findByUserOrderByCreatedDesc(user);
+        if (notifications.isEmpty()) {
+            return ResponseEntity.status(400).body(null);
+        }
+        for (Notification notification : notifications) {
+            NotificationDto notificationDto = new NotificationDto();
+            notificationDto.setTitle(notification.getTitle());
+            notificationDto.setMessage(notification.getMessage());
+            notificationDto.setCreated(notification.getCreated());
+            notificationDtoList.add(notificationDto);
+        }
+        return ResponseEntity.status(200).body(notificationDtoList);
+    }
+
+    @GetMapping("all-notifications")
+    public ResponseEntity<List<NotificationDto>> getAllNotifications() {
+        List<NotificationDto> notificationDtoList = new ArrayList<>();
+        List<Notification> notifications = notificationRepository.findAll();
+        if (notifications.isEmpty()) {
+            return ResponseEntity.status(400).body(null);
+        }
+        for (Notification notification : notifications) {
+            NotificationDto notificationDto = new NotificationDto();
+            notificationDto.setTitle(notification.getTitle());
+            notificationDto.setMessage(notification.getMessage());
+            notificationDto.setCreated(notification.getCreated());
+            notificationDtoList.add(notificationDto);
+        }
+        return ResponseEntity.status(200).body(notificationDtoList);
     }
 }

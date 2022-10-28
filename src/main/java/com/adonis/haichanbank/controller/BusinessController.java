@@ -1,14 +1,8 @@
 package com.adonis.haichanbank.controller;
 
 import com.adonis.haichanbank.dto.BusinessDto;
-import com.adonis.haichanbank.models.History;
-import com.adonis.haichanbank.models.OTP;
-import com.adonis.haichanbank.models.Payment;
-import com.adonis.haichanbank.models.User;
-import com.adonis.haichanbank.repositories.HistoryRepository;
-import com.adonis.haichanbank.repositories.OTPRepository;
-import com.adonis.haichanbank.repositories.PaymentRepository;
-import com.adonis.haichanbank.repositories.UserRepository;
+import com.adonis.haichanbank.models.*;
+import com.adonis.haichanbank.repositories.*;
 import com.adonis.haichanbank.services.BusinessServices;
 import com.adonis.haichanbank.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +56,9 @@ public class BusinessController {
         return "business/payment";
     }
 
+    @Autowired
+    NotificationRepository notificationRepository;
+
     @GetMapping("/save")
     public String makePayment(
             @RequestParam String otp,
@@ -109,6 +106,16 @@ public class BusinessController {
         payment.setStatus("done");
         otpRepository.save(otp_contain);
         paymentRepository.save(payment);
+        Notification customerNotification = new Notification();
+        customerNotification.setUser(fromUser);
+        customerNotification.setTitle("Biến động số dư");
+        customerNotification.setMessage("TK: " + fromUser.getCard() + " -" + payment.getAmount() + "đ. ND:" + "Thanh toán đơn hàng " + payment.getTransactionID());
+        notificationRepository.save(customerNotification);
+        Notification businessNotification = new Notification();
+        businessNotification.setUser(toUser);
+        businessNotification.setTitle("Biến động số dư");
+        businessNotification.setMessage("TK: " + toUser.getCard() + " +" + payment.getAmount() + "đ. ND:" + "Đơn hàng " + payment.getTransactionID());
+        notificationRepository.save(businessNotification);
         return "redirect:" + businessDto.getCallback() + "?transaction=" + payment.getTransactionID();
     }
 
