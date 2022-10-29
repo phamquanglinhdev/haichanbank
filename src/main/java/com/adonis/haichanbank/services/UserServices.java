@@ -3,11 +3,12 @@ package com.adonis.haichanbank.services;
 import com.adonis.haichanbank.models.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserServices {
     List<User> getAllUsers();
 
-    User getUserById(Long id);
+    Optional<User> getUserById(Long id);
 
     User getUserByEmail(String email);
 

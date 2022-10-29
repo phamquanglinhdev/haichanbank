@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layouts/common::common(~{::content},~{::css},~{::js})">
+<css>
+    <link th:href="@{/vendor/datatables/css/jquery.dataTables.min.css}" rel="stylesheet">
+</css>
+<content class="content">
+    <div class="content-body">
+        <div class="container-fluid">
+
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Người dùng</a></li>
+                    <!--                    <li class="breadcrumb-item"><a href="javascript:void(0)">Datatable</a></li>-->
+                </ol>
+            </div>
+            <!-- row -->
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <!--                        <div class="card-header">-->
+                        <!--                            <h4 class="card-title">Basic Datatable</h4>-->
+                        <!--                        </div>-->
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="example" class="display" style="min-width: 845px">
+                                    <thead>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>Số tài khoản</th>
+                                        <th>Phân quyền</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <th:block th:each="user:${users}">
+                                        <tr>
+                                            <td>
+                                                <th:block th:text="${user.name}"/>
+                                            </td>
+                                            <td>
+                                                <th:block th:text="${user.email}"/>
+                                            </td>
+                                            <td>
+                                                <th:block th:text="${user.phone}"/>
+                                            </td>
+                                            <td>
+                                                <th:block th:text="${user.card}"/>
+                                            </td>
+                                            <td>
+                                                <th:block th:text="${user.role}"/>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex">
+                                                    <a th:href="@{/admin/user/notification/{id}(id=${user.id})}" class="btn btn-danger shadow btn-xs sharp me-1"><i
+                                                            class="fa fa-mail-bulk"></i></a>
+                                                    <a th:href="@{/admin/user/edit/{id}(id=${user.id})}"
+                                                       class="btn btn-primary shadow btn-xs sharp me-1"><i
+                                                            class="fas fa-user-lock"></i></a>
+                                                    <a href="#" class="btn btn-danger shadow btn-xs sharp"><i
+                                                            class="fa flaticon-381-error"></i></a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </th:block>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Tên</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>Số tài khoản</th>
+                                        <th>Phân quyền</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</content>
+<js>
+    <script th:src="@{/vendor/datatables/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/plugins-init/datatables.init.js}"></script>
+</js>

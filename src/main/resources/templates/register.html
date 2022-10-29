@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+
+<!-- Mirrored from dompet.dexignlab.com/xhtml/page-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 14 Oct 2022 11:03:11 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="admin, dashboard"/>
+    <meta name="author" content="DexignZone"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dompet : Payment Admin Template"/>
+    <meta property="og:title" content="Dompet : Payment Admin Template"/>
+    <meta property="og:description" content="Dompet : Payment Admin Template"/>
+    <meta property="og:image" content="social-image.png"/>
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- PAGE TITLE HERE -->
+    <title>Dompet : Payment Admin Template</title>
+
+    <!-- FAVICONS ICON -->
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="vh-100">
+<div class="authincation h-100">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100 align-items-center">
+            <div class="col-md-6">
+                <div class="authincation-content">
+                    <div class="row no-gutters">
+                        <div class="col-xl-12">
+                            <div class="auth-form">
+                                <div class="text-center mb-3">
+                                    <a href="#">HAICHANBANK</a>
+                                </div>
+                                <h4 class="text-center mb-4">Đăng's ký tài khoản mới đi's</h4>
+                                <form th:action="@{/create-user}" method="post">
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>Họ và tên</strong></label>
+                                        <input type="text" name="name" class="form-control border-primary border"
+                                               placeholder="Họ và tên">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>Email</strong></label>
+                                        <input type="email" name="email" class="form-control border-primary border"
+                                               placeholder="hello@example.com">
+                                    </div>
+                                    <label class="mb-1"><strong>Số điện thoại ( Nhận OTP )</strong></label>
+                                    <div class="input-group mb-3">
+                                        <input type="text" class="form-control border-primary border"
+                                               style="height: auto!important;" name="phone" id="phone">
+                                        <button class="btn btn-primary" type="button" id="get-otp">OTP</button>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>OTP</strong></label>
+                                        <input type="text" name="otp" class="form-control border-primary border"
+                                               placeholder="OTP : H-XXXXXX">
+                                    </div>
+                                    <div id="otp-result"></div>
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>Mật's khẩu</strong></label>
+                                        <input type="password" name="password"
+                                               class="form-control border-primary border">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="mb-1"><strong>Nhập lại mật's khẩu</strong></label>
+                                        <input type="password" name="confirm"
+                                               class="form-control border-primary border">
+                                    </div>
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-primary btn-block">Đăng's ký nào</button>
+                                    </div>
+                                </form>
+                                <div class="new-account mt-3">
+                                    <p>Có tài khoản rồi á ? <a class="text-primary" th:href="@{/login}">Đăng's nhập
+                                        đê </a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--**********************************
+	Scripts
+***********************************-->
+<!-- Required vendors -->
+<script th:src="@{/vendor/global/global.min.js}"></script>
+<script th:src="@{/js/custom.min.js}"></script>
+<script th:src="@{/js/dlabnav-init.js}"></script>
+<script th:src="@{/js/styleSwitcher.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.4/sweetalert2.all.min.js"></script>
+<script th:inline="javascript">
+    $('#get-otp').click(function (e) {
+        let phone = $("#phone").val()
+        let result = $("#result-otp");
+        if (phone === "") {
+            phone = "none";
+        }
+        e.preventDefault();
+        console.log(phone);
+        $.ajax({
+            url: 'http://localhost:8080/api/v8/new-otp',
+            type: 'GET',
+            // dataType: 'json',
+            data: {
+                phone: phone,
+            },
+            success: function (data) {
+                console.log(data)
+                result.css("color", "green")
+                result.text(data)
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: data
+                })
+            },
+            error: function (e) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Số điện thoại đã được sử dụng'
+                })
+            }
+        });
+
+    });
+    $(document).ready(function () {
+        var success = [[${success}]];
+        console.log(success);
+        var error = [[${error}]];
+        console.log(error);
+        var message = [[${message}]];
+        console.log(error);
+        if (success !== null) {
+            Swal.fire({
+                title: success,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 2000
+            })
+        }
+        if (error !== null) {
+            Swal.fire({
+                title: error,
+                text: "",
+                icon: 'error',
+            })
+        }
+        if (message !== null) {
+            Swal.fire({
+                title: message,
+                text: "",
+                icon: 'warning',
+            })
+        }
+    });
+</script>
+</body>
+
+<!-- Mirrored from dompet.dexignlab.com/xhtml/page-register.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 14 Oct 2022 11:03:11 GMT -->
+</html>

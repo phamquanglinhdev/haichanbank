@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register").permitAll()
                 .antMatchers("/bank/**").authenticated()
                 .antMatchers("/").denyAll()
-                .antMatchers("/bank/secret").hasAuthority("admin")
+                .antMatchers("/admin/**").hasAuthority("admin")
                 .and()
                 .formLogin()
                 .loginPage("/login")

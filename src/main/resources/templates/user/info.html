@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layouts/common::common(~{::content},~{::css},~{::js})">
+<css></css>
+
+<content class="content">
+    <div class="content-body">
+        <div class="container-fluid">
+            <!-- row -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="profile card card-body px-3 pt-3 pb-0">
+                        <div class="profile-head">
+                            <div class="photo-content">
+                                <div class="cover-photo rounded"></div>
+                            </div>
+                            <div class="profile-info">
+                                <div class="profile-photo">
+                                    <img src="images/profile/profile.png" class="img-fluid rounded-circle" alt="">
+                                </div>
+                                <div class="profile-details">
+                                    <div class="profile-name px-3 pt-2">
+                                        <h4 class="text-primary mb-0">
+                                            <th:block th:text="${currentUser.name}"/>
+                                        </h4>
+                                        <p>
+                                            <th:block th:text="${currentUser.role}"/>
+                                        </p>
+                                    </div>
+                                    <div class="profile-email px-2 pt-2">
+                                        <h4 class="text-muted mb-0">
+                                            <th:block th:text="${currentUser.email}"/>
+                                        </h4>
+                                        <p>Email</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-4">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-statistics">
+                                        <div class="font-italic">
+                                            <b>Số tài khoản: </b>
+                                            <th:block th:text="${currentUser.card}"/>
+                                        </div>
+                                        <div class="font-italic">
+                                            <b>Số điện thoại: </b>
+                                            <th:block th:text="${currentUser.phone}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="row align-items-center">
+                                    <div class="col-12">
+                                        <div class="image-contain m-auto p-lg-4 p-2">
+                                            <img th:src="${currentUser.avatar}" id="avatar" class="rounded w-100">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-center mt-2">
+                                        <input id="inp" type="file" class="form-control-file">
+                                    </div>
+                                    <div class="col-12">
+                                        <form th:action="@{/bank/user/change-avatar}" class="p-3" method="post">
+                                            <input hidden id="base64" name="avatar">
+                                            <button class="w-100 btn-outline-success rounded-0mt-2 btn disabled"
+                                                    id="upload-avatar">Cập nhật ảnh
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-statistics">
+                                        <div class="text-center">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h3 class="m-b-0">150</h3><span>Đơn hàng</span>
+                                                </div>
+                                                <div class="col">
+                                                    <h3 class="m-b-0">140</h3><span>Hóa đơn</span>
+                                                </div>
+                                                <div class="col">
+                                                    <h3 class="m-b-0">45</h3><span>Giao dịch</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-4">
+                                                <a th:href="@{/logout}"
+                                                   class="btn btn-primary mb-1 me-1 w-100">Đăng xuất</a>
+                                            </div>
+                                        </div>
+                                        <!-- Modal -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="profile-tab">
+                                <div class="custom-tab-1">
+                                    <ul class="nav nav-tabs">
+                                        <li class="nav-item"><a href="#profile-settings" data-bs-toggle="tab"
+                                                                class="nav-link active show">Cập nhật thông tin</a>
+                                        </li>
+                                        <li class="nav-item"><a href="#about-me" data-bs-toggle="tab" class="nav-link">Đổi
+                                            SĐT</a>
+                                        </li>
+                                        <th:block
+                                                th:if="${currentUser.role =='admin' || currentUser.role=='business'}">
+                                            <li class="nav-item"><a href="#business" data-bs-toggle="tab"
+                                                                    class="nav-link">Tài khoản business</a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="about-me" class="tab-pane fade">
+                                            <div class="pt-3">
+                                                <div class="settings-form">
+                                                    <h4 class="text-primary">Đổi số điện thoại(địa chỉ nhận OTP)</h4>
+                                                    <div class="row">
+                                                        <label class="form-label">Bước 1: Nhập mật khẩu lấy OTP SĐT
+                                                            Cũ</label>
+                                                        <div class="input-group mb-3">
+                                                            <input type="password" class="form-control"
+                                                                   id="otp-password"
+                                                                   name="password"
+                                                                   placeholder="Mật khẩu của bạn"
+                                                                   aria-describedby="basic-addon2" required>
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-outline-secondary"
+                                                                        style="border-radius:0!important; "
+                                                                        type="button" id="otp-password-send">Nhận OTP
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12" id="opt-password-result"></div>
+                                                    </div>
+                                                    <form th:action="@{/bank/user/change-phone}" method="post">
+                                                        <div class="row">
+                                                            <label class="form-label">Bước 2: Nhập SĐT mới để lấy OTP
+                                                                mới</label>
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control"
+                                                                       id="phone"
+                                                                       name="phone"
+                                                                       aria-describedby="basic-addon2" required>
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-outline-secondary"
+                                                                            style="border-radius:0!important; "
+                                                                            type="button" id="phone-otp">Nhận OTP
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12" id="opt-phone-result"></div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label class="form-label">Nhập OTP(SĐT Cũ)</label>
+                                                                <input type="text" placeholder="OTP:H-XXXXXX"
+                                                                       name="oldOTP"
+                                                                       class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-6">
+                                                                <label class="form-label">Nhập OTP(SĐT Mới)</label>
+                                                                <input type="text" placeholder="OTP:H-XXXXXX"
+                                                                       name="newOTP"
+                                                                       class="form-control">
+                                                            </div>
+                                                            <div class="col-12 mb-2">
+                                                                <button type="submit"
+                                                                        class="w-100 btn btn-outline-primary rounded-0">
+                                                                    Đổi SĐT
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <th:block
+                                                th:if="${currentUser.role =='admin' || currentUser.role=='business'}">
+                                            <div id="business" class="tab-pane fade">
+                                                <div class="profile-about-me">
+                                                    <div class="pt-4 border-bottom-1 pb-3">
+                                                        <h4 class="text-primary">About Me</h4>
+                                                        <p class="mb-2">A wonderful serenity has taken possession of my
+                                                            entire soul, like these sweet mornings of spring which I
+                                                            enjoy
+                                                            with my whole heart. I am alone, and feel the charm of
+                                                            existence
+                                                            was created for the bliss of souls like mine.I am so happy,
+                                                            my
+                                                            dear friend, so absorbed in the exquisite sense of mere
+                                                            tranquil
+                                                            existence, that I neglect my talents.</p>
+                                                        <p>A collection of textile samples lay spread out on the table -
+                                                            Samsa was a travelling salesman - and above it there hung a
+                                                            picture that he had recently cut out of an illustrated
+                                                            magazine
+                                                            and housed in a nice, gilded frame.</p>
+                                                    </div>
+                                                </div>
+                                                <div class="profile-skills mb-5">
+                                                    <h4 class="text-primary mb-2">Skills</h4>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary light btn-xs mb-1">Admin</a>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary light btn-xs mb-1">Dashboard</a>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary light btn-xs mb-1">Photoshop</a>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary light btn-xs mb-1">Bootstrap</a>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary light btn-xs mb-1">Responsive</a>
+                                                    <a href="javascript:void(0);"
+                                                       class="btn btn-primary light btn-xs mb-1">Crypto</a>
+                                                </div>
+                                                <div class="profile-lang  mb-5">
+                                                    <h4 class="text-primary mb-2">Language</h4>
+                                                    <a href="javascript:void(0);" class="text-muted pe-3 f-s-16"><i
+                                                            class="flag-icon flag-icon-us"></i> English</a>
+                                                    <a href="javascript:void(0);" class="text-muted pe-3 f-s-16"><i
+                                                            class="flag-icon flag-icon-fr"></i> French</a>
+                                                    <a href="javascript:void(0);" class="text-muted pe-3 f-s-16"><i
+                                                            class="flag-icon flag-icon-bd"></i> Bangla</a>
+                                                </div>
+                                                <div class="profile-personal-info">
+                                                    <h4 class="text-primary mb-4">Personal Information</h4>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Name <span class="pull-end">:</span>
+                                                            </h5>
+                                                        </div>
+                                                        <div class="col-sm-9 col-7"><span>Mitchell C.Shay</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Email <span class="pull-end">:</span>
+                                                            </h5>
+                                                        </div>
+                                                        <div class="col-sm-9 col-7"><span>example@examplel.com</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Availability <span
+                                                                    class="pull-end">:</span>
+                                                            </h5>
+                                                        </div>
+                                                        <div class="col-sm-9 col-7"><span>Full Time (Free Lancer)</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Age <span class="pull-end">:</span>
+                                                            </h5>
+                                                        </div>
+                                                        <div class="col-sm-9 col-7"><span>27</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Location <span class="pull-end">:</span>
+                                                            </h5>
+                                                        </div>
+                                                        <div class="col-sm-9 col-7"><span>Rosemont Avenue Melbourne,
+                                                                Florida</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <div class="col-sm-3 col-5">
+                                                            <h5 class="f-w-500">Year Experience <span
+                                                                    class="pull-end">:</span></h5>
+                                                        </div>
+                                                        <div class="col-sm-9 col-7"><span>07 Year Experiences</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </th:block>
+                                        <div id="profile-settings" class="tab-pane active show">
+                                            <div class="pt-3">
+                                                <div class="settings-form">
+                                                    <h4 class="text-primary">Thông tin tài khoản</h4>
+                                                    <div class="row">
+                                                        <form th:action="@{/bank/user/change-email}" method="post">
+                                                            <div class="input-group mb-3">
+                                                                <input type="email" class="form-control"
+                                                                       id="card-value"
+                                                                       name="email"
+                                                                       th:attr="value=${currentUser.email}"
+                                                                       aria-describedby="basic-addon2" required>
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-outline-secondary"
+                                                                            style="border-radius:0!important; "
+                                                                            type="submit" id="find_card">Sửa
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="row">
+                                                        <form th:action="@{/bank/user/change-name}" method="post">
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control"
+                                                                       name="name"
+                                                                       th:attr="value=${currentUser.name}"
+                                                                       aria-describedby="basic-addon2" required>
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-outline-secondary"
+                                                                            style="border-radius:0!important; "
+                                                                            type="submit">Sửa
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <form th:action="@{/bank/user/change-password}" method="post">
+                                                        <div class="row">
+                                                            <div class="mb-3 col-md-4">
+                                                                <label class="form-label">Mật khẩu cũ</label>
+                                                                <input type="password" placeholder="Password"
+                                                                       name="old"
+                                                                       class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-4">
+                                                                <label class="form-label">Mật khẩu mới</label>
+                                                                <input type="password" placeholder="Password"
+                                                                       name="password"
+                                                                       class="form-control">
+                                                            </div>
+                                                            <div class="mb-3 col-md-4">
+                                                                <label class="form-label">Nhập lại mật khẩu</label>
+                                                                <input type="password" placeholder="Password"
+                                                                       name="confirm"
+                                                                       class="form-control">
+                                                            </div>
+                                                            <div class="col-12 mb-2">
+                                                                <button type="submit"
+                                                                        class="w-100 btn btn-outline-primary rounded-0">
+                                                                    Đổi mật khẩu
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="replyModal">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Post Reply</h5>
+                                                <button type="button" class="btn-close"
+                                                        data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form>
+                                                    <textarea class="form-control" rows="4">Message</textarea>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger light"
+                                                        data-bs-dismiss="modal">btn-close
+                                                </button>
+                                                <button type="button" class="btn btn-primary">Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</content>
+<js>
+    <script>
+        function readFile() {
+            if (!this.files || !this.files[0]) return;
+            const FR = new FileReader();
+            FR.addEventListener("load", function (evt) {
+                document.querySelector("#avatar").src = evt.target.result;
+                $("#base64").val(evt.target.result)
+                $("#upload-avatar").removeClass("disabled")
+            });
+            FR.readAsDataURL(this.files[0]);
+        }
+
+        document.querySelector("#inp").addEventListener("change", readFile);
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#otp-password-send').click(function (e) {
+                let password = $("#otp-password").val()
+                let result = $("#opt-password-result");
+                if (password === "") {
+                    password = "none";
+                }
+                e.preventDefault();
+                console.log(password);
+                $.ajax({
+                    url: 'http://localhost:8080/api/v8/auth-1',
+                    type: 'GET',
+                    // dataType: 'json',
+                    data: {
+                        password: password,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        result.css("color", "green")
+                        result.text(data)
+                    },
+                    error: function () {
+                        result.css("color", "red")
+                        result.text("Anh zai sai mật khẩu rồi !")
+                    }
+                });
+
+            });
+
+            $('#phone-otp').click(function (e) {
+                let phone = $("#phone").val()
+                let result = $("#opt-phone-result");
+                if (phone === "") {
+                    phone = "none";
+                }
+                e.preventDefault();
+                console.log(phone);
+                $.ajax({
+                    url: 'http://localhost:8080/api/v8/new-otp',
+                    type: 'GET',
+                    // dataType: 'json',
+                    data: {
+                        phone: phone,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        result.css("color", "green")
+                        result.text(data)
+                    },
+                    error: function () {
+                        result.css("color", "red")
+                        result.text("Có lỗi xảy ra ! Vui lòng thực hiện lại")
+                    }
+                });
+
+            });
+        });
+    </script>
+</js>

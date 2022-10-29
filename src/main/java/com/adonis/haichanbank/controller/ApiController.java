@@ -89,6 +89,29 @@ public class ApiController {
 
     }
 
+    @GetMapping("/new-otp")
+    public ResponseEntity<String> newPhoneOTP(@RequestParam String phone) {
+        User user = userServices.getUserByPhone(phone);
+        if (user != null) {
+            return ResponseEntity.status(404).body("Số điện thoại đã được sử dụng");
+        }
+        List<OTP> otps = otpRepository.findByPhone(phone);
+        if (otps != null) {
+            for (OTP otp : otps) {
+                if (!otp.isUsed()) {
+                    otpRepository.delete(otp);
+                }
+            }
+        }
+        OTP newOtp = new OTP();
+        Random gen = new Random();
+        newOtp.setPhone(phone);
+        int digest = gen.nextInt((999999 - 111111) + 1) + 111111;
+        newOtp.setOtp("H-" + digest);
+        otpRepository.save(newOtp);
+        return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
+    }
+
     @GetMapping("create-payment")
     public String createPayment(
             @RequestParam String token,
@@ -147,4 +170,10 @@ public class ApiController {
         }
         return ResponseEntity.status(200).body(notificationDtoList);
     }
+
+    @GetMapping("avatar")
+    public ResponseEntity<String> changeAvatar() {
+        return ResponseEntity.status(404).body(null);
+    }
+
 }

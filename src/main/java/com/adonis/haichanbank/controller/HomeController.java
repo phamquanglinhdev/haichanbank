@@ -1,8 +1,10 @@
 package com.adonis.haichanbank.controller;
 
 import com.adonis.haichanbank.models.History;
+import com.adonis.haichanbank.models.Notification;
 import com.adonis.haichanbank.models.User;
 import com.adonis.haichanbank.repositories.HistoryRepository;
+import com.adonis.haichanbank.repositories.NotificationRepository;
 import com.adonis.haichanbank.services.UserPrincipal;
 import com.adonis.haichanbank.services.UserServicesImpl;
 import com.adonis.haichanbank.utils.CurrentUser;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 @RequestMapping("bank")
@@ -47,9 +50,14 @@ public class HomeController {
         return "wallet";
     }
 
+    @Autowired
+    NotificationRepository notificationRepository;
 
-    @GetMapping("secret")
-    public String secret() {
-        return "secret";
+    @GetMapping("notifications")
+    public String Notifications(Model model) {
+        model.addAttribute("currentUser", currentUser.get());
+        List<Notification> notifications = notificationRepository.findByUserOrderByCreatedDesc(currentUser.get());
+        model.addAttribute("notifications", notifications);
+        return "notifications";
     }
 }

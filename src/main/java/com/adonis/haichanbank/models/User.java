@@ -28,7 +28,7 @@ public class User {
     private String remember;
 
     private String role;
-    @Column(nullable = false)
+    @Column(nullable = false,length = 10000000)
 
     private String avatar;
     @Column(nullable = false)
