@@ -36,6 +36,14 @@ public class MoneyController {
 
     @PostMapping("transfer")
     public String TransferMoney(@ModelAttribute History history, @RequestParam(name = "otp") String otp_code, RedirectAttributes model, Principal principal) {
+        if (history.getAmount() == 0) {
+            model.addFlashAttribute("error", "Số tiền không được để trống");
+            return "redirect:/bank";
+        }
+        if (history.getAmount() < 0) {
+            model.addFlashAttribute("error", "Số tiền không thể âm ");
+            return "redirect:/bank";
+        }
         if (history.getTo() == null) {
             model.addFlashAttribute("error", "Không có người nhận");
             return "redirect:/bank";

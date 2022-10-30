@@ -27,6 +27,7 @@
                                 <table id="example" class="display" style="min-width: 845px">
                                     <thead>
                                     <tr>
+                                        <th>Avatar</th>
                                         <th>Tên</th>
                                         <th>Email</th>
                                         <th>SĐT</th>
@@ -38,6 +39,9 @@
                                     <tbody>
                                     <th:block th:each="user:${users}">
                                         <tr>
+                                            <td>
+                                                <img th:src="${user.avatar}" style="width: 3em" class="rounded">
+                                            </td>
                                             <td>
                                                 <th:block th:text="${user.name}"/>
                                             </td>
@@ -55,7 +59,8 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a th:href="@{/admin/user/notification/{id}(id=${user.id})}" class="btn btn-danger shadow btn-xs sharp me-1"><i
+                                                    <a th:href="@{/admin/user/notification/{id}(id=${user.id})}"
+                                                       class="btn btn-danger shadow btn-xs sharp me-1"><i
                                                             class="fa fa-mail-bulk"></i></a>
                                                     <a th:href="@{/admin/user/edit/{id}(id=${user.id})}"
                                                        class="btn btn-primary shadow btn-xs sharp me-1"><i
@@ -70,6 +75,7 @@
                                     </tbody>
                                     <tfoot>
                                     <tr>
+                                        <th>Avartar</th>
                                         <th>Tên</th>
                                         <th>Email</th>
                                         <th>SĐT</th>

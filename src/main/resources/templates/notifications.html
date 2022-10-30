@@ -3,7 +3,48 @@
 <css></css>
 <content class="content">
     <div class="content-body">
-        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header d-block">
+                        <h4 class="card-title">Thông báo</h4>
+                        <p class="m-0 subtitle">Hiển thị thông báo</p>
+                    </div>
+                    <div class="card-body">
+                        <!-- Default accordion -->
+
+                        <div class="accordion accordion-primary" id="accordion-one">
+                            <th:block th:each="notification : ${notifications}">
+                                <div class="accordion-item">
+                                    <div class="accordion-header rounded-lg collapsed"
+                                         th:attr="id='heading-'+${notification.getId()},data-bs-target='#collapse-'+${notification.getId()},aria-controls='collapse-'+${notification.getId()}"
+                                         data-bs-toggle="collapse"
+                                         aria-expanded="false" role="button">
+                                        <span class="accordion-header-icon"></span>
+                                        <span class="accordion-header-text">
+                                            [
+                                            <th:block th:text="${notification.getCreated()}"/>
+                                            ]
+                                           <th:block th:text="${notification.getTitle()}"/>
+                                       </span>
+                                        <span class="accordion-header-indicator"></span>
+                                    </div>
+                                    <div
+                                            th:attr="id='collapse-'+${notification.getId()},aria-labelledby='heading-'+${notification.getId()}"
+                                            class="collapse"
+                                            data-bs-parent="#accordion-one" style="">
+                                        <div class="accordion-body-text">
+                                            <th:block th:text="${notification.getMessage()}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </content>
 <js></js>
