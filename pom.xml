@@ -66,9 +66,14 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.seratch</groupId>
-            <artifactId>jslack</artifactId>
-            <version>1.5.6</version>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.slack.api/slack-api-client -->
+        <dependency>
+            <groupId>com.slack.api</groupId>
+            <artifactId>slack-api-client</artifactId>
+            <version>1.26.1</version>
         </dependency>
     </dependencies>
 

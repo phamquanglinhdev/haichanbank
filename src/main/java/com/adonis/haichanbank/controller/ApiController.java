@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -63,7 +64,8 @@ public class ApiController {
     }
 
     @GetMapping("/auth-1")
-    public ResponseEntity<String> checkPassword(@RequestParam String password) {
+    public ResponseEntity<String> checkPassword(@RequestParam String password) throws IOException {
+        System.out.println("Đang gửi otp");
         String userPassword = currentUser.get().getPassword();
         if (!passwordEncoder.matches(password, userPassword)) {
             return ResponseEntity.status(404).body(null);
@@ -83,14 +85,14 @@ public class ApiController {
         int digest = gen.nextInt((999999 - 111111) + 1) + 111111;
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
-//        PhoneNotification phoneNotification = new PhoneNotification();
-//        phoneNotification.make(newOtp.getPhone(), "HAICHANBANK OTP:" + newOtp.getOtp());
+        PhoneNotification phoneNotification = new PhoneNotification();
+        phoneNotification.make(newOtp.getPhone(), "HAICHANBANK OTP:" + newOtp.getOtp());
         return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
 
     }
 
     @GetMapping("/new-otp")
-    public ResponseEntity<String> newPhoneOTP(@RequestParam String phone) {
+    public ResponseEntity<String> newPhoneOTP(@RequestParam String phone) throws IOException {
         User user = userServices.getUserByPhone(phone);
         if (user != null) {
             return ResponseEntity.status(404).body("Số điện thoại đã được sử dụng");
@@ -109,6 +111,8 @@ public class ApiController {
         int digest = gen.nextInt((999999 - 111111) + 1) + 111111;
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
+        PhoneNotification phoneNotification = new PhoneNotification();
+        phoneNotification.make(newOtp.getPhone(), "HAICHANBANK OTP:" + newOtp.getOtp());
         return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
     }
 
