@@ -424,7 +424,7 @@
                 e.preventDefault();
                 console.log(password);
                 $.ajax({
-                    url: 'http://localhost:8080/api/v8/auth-1',
+                    url: '/api/v8/auth-1',
                     type: 'GET',
                     // dataType: 'json',
                     data: {
@@ -452,7 +452,7 @@
                 e.preventDefault();
                 console.log(phone);
                 $.ajax({
-                    url: 'http://localhost:8080/api/v8/new-otp',
+                    url: '/api/v8/new-otp',
                     type: 'GET',
                     // dataType: 'json',
                     data: {
