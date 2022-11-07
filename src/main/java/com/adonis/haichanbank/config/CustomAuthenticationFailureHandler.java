@@ -2,7 +2,7 @@ package com.adonis.haichanbank.config;
 
 import com.adonis.haichanbank.models.User;
 import com.adonis.haichanbank.repositories.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
-    private final ObjectMapper objectMapper = new ObjectMapper();
+//    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     UserRepository userRepository;
