@@ -415,7 +415,7 @@
                         </li>
                         <li class="nav-item dropdown notification_dropdown">
                             <a class="nav-link  ai-icon" href="javascript:void(0);" role="button"
-                               data-bs-toggle="dropdown">
+                               data-bs-toggle="dropdown" id="bell">
                                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -634,6 +634,23 @@
             }
         });
     });
+
+    $(document).ready(function () {
+        $("#bell").click(function () {
+            $.ajax({
+                url: '/api/v8/notification/read',
+                type: 'GET',
+                success: function (data) {
+                    unread = 0
+                    countNotification.innerText = unread
+                },
+                error: function () {
+
+                }
+            });
+        })
+    });
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.4/sweetalert2.all.min.js"></script>
 <script th:inline="javascript">
@@ -662,6 +679,17 @@
     });
 
 
+</script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script>
+    Pusher.logToConsole = true;
+    var pusher = new Pusher('c5318d768de94b3e93c3', {
+        cluster: 'ap1'
+    });
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+        alert(JSON.stringify(data));
+    });
 </script>
 <th:block th:replace="${js}"></th:block>
 </body>

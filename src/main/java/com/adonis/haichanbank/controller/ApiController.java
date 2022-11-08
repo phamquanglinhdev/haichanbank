@@ -175,6 +175,23 @@ public class ApiController {
         return ResponseEntity.status(200).body(notificationDtoList);
     }
 
+    @GetMapping("notification/read")
+    public ResponseEntity<String> read() {
+        User user = currentUser.get();
+        List<NotificationDto> notificationDtoList = new ArrayList<>();
+        List<Notification> notifications = notificationRepository.findByUserOrderByCreatedDesc(user);
+        if (notifications.isEmpty()) {
+            return ResponseEntity.status(400).body(null);
+        }
+        for (Notification notification : notifications) {
+            if (notification.getReading() == null) {
+                notification.setReading("read");
+                notificationRepository.save(notification);
+            }
+        }
+        return ResponseEntity.status(200).body(null);
+    }
+
     @GetMapping("avatar")
     public ResponseEntity<String> changeAvatar() {
         return ResponseEntity.status(404).body(null);
