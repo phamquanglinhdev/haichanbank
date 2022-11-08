@@ -3,7 +3,37 @@
 <css></css>
 <content class="content">
     <div class="content-body">
-        <!-- row -->
+        <div class="container row">
+            <div class="col-md-10 col-12">
+                <div class="accordion accordion-primary-solid" id="accordion-two">
+                    <th:block th:each="notification:${notifications}">
+                        <div class="accordion-item">
+                            <div class="accordion-header rounded-0 collapsed"
+                                 th:attr="id='accord-'+${notification.getId()},
+                                                     data-bs-target='#collapse-'+${notification.getId()},
+                                                     aria-controls='collapse-'+${notification.getId()}"
+                                 data-bs-toggle="collapse"
+                                 aria-expanded="false"
+                                 role="button">
+                        <span class="accordion-header-text rounded-0">
+                                <th:block th:text="${notification.getTitle()}"/>
+                            </span>
+                                <span class="accordion-header-indicator"></span>
+                            </div>
+                            <div th:attr="id='collapse-'+${notification.getId()},
+                            aria-labelledby='accord-'+${notification.getId()},
+                            data-bs-parent='#accord-'+${notification.getId()}"
+                                 class="accordion__body collapse rounded-0 border-0"
+                                 style="">
+                                <div class="accordion-body-text rounded-0">
+                                    <th:block th:text="${notification.getMessage()}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+        </div>
     </div>
 </content>
 <js></js>

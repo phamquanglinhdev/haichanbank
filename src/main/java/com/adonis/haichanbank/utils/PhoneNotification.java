@@ -9,7 +9,7 @@ import static com.slack.api.webhook.WebhookPayloads.*;
 
 public class PhoneNotification {
     public void make(String phone, String notification) throws IOException {
-        String webhookUrl = "https://hooks.slack.com/services/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";
+        String webhookUrl = "https://hooks.slack.com/services/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";
         Slack slack = Slack.getInstance();
         WebhookResponse response = slack.send(webhookUrl, payload(
                 p -> p

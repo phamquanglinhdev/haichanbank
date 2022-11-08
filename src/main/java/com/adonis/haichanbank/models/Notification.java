@@ -22,6 +22,17 @@ public class Notification {
     @Column(nullable = false)
     private Timestamp created = Timestamp.from(Instant.now());
 
+    public String getReading() {
+        return reading;
+    }
+
+    public void setReading(String reading) {
+        this.reading = reading;
+    }
+
+    @Column()
+    private String reading;
+
     public Timestamp getCreated() {
         return created;
     }
