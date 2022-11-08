@@ -5,9 +5,18 @@ import java.sql.Timestamp;
 public class NotificationDto {
     private String title;
     private String message;
+    private String reading;
     private Timestamp created;
 
     public NotificationDto() {
+    }
+
+    public String getReading() {
+        return reading;
+    }
+
+    public void setReading(String reading) {
+        this.reading = reading;
     }
 
     public String getTitle() {

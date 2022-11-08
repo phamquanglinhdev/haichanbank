@@ -5,6 +5,7 @@ import com.adonis.haichanbank.models.User;
 import com.adonis.haichanbank.repositories.NotificationRepository;
 import com.adonis.haichanbank.repositories.UserRepository;
 import com.adonis.haichanbank.utils.CurrentUser;
+import com.adonis.haichanbank.utils.PusherSever;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -106,6 +107,8 @@ public class UserCrudController {
         notification.setMessage(message);
         notification.setTitle(title);
         notificationRepository.save(notification);
+        PusherSever pusherSever = new PusherSever();
+        pusherSever.sendNotifcation(user.getPhone(), message);
         model.addFlashAttribute("success", "Gửi đi thành công");
         return "redirect:/admin/user/index";
     }

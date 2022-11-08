@@ -152,6 +152,7 @@ public class ApiController {
             NotificationDto notificationDto = new NotificationDto();
             notificationDto.setTitle(notification.getTitle());
             notificationDto.setMessage(notification.getMessage());
+            notificationDto.setReading(notification.getReading());
             notificationDto.setCreated(notification.getCreated());
             notificationDtoList.add(notificationDto);
         }

@@ -595,6 +595,7 @@
     let unread = 0
 
     function makeNotifcation(item) {
+        console.log(item)
         let list = document.createElement("li");
         let a = document.createElement("a")
         a.href = "#"
@@ -607,7 +608,7 @@
         a.append(message)
         list.append(a)
         list.append(document.createElement("hr"))
-        if (item.reading == null) {
+        if (item.reading !== "read") {
             unread += 1
             countNotification.innerText = unread
 
@@ -687,7 +688,7 @@
         cluster: 'ap1'
     });
     var channel = pusher.subscribe('my-channel');
-    channel.bind('my-event', function(data) {
+    channel.bind('my-event', function (data) {
         alert(JSON.stringify(data));
     });
 </script>
