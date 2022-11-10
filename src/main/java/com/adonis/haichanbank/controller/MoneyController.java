@@ -8,8 +8,11 @@ import com.adonis.haichanbank.repositories.HistoryRepository;
 import com.adonis.haichanbank.repositories.NotificationRepository;
 import com.adonis.haichanbank.repositories.OTPRepository;
 import com.adonis.haichanbank.repositories.UserRepository;
+import com.adonis.haichanbank.utils.PhoneNotification;
+import com.adonis.haichanbank.utils.PusherSever;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -79,11 +82,15 @@ public class MoneyController {
         formNotification.setTitle("Biến động số dư");
         formNotification.setMessage("TK:" + fromUser.getCard() + " -" + amount + "đ. ND:" + history.getMessage());
         notificationRepository.save(formNotification);
+        PhoneNotification phoneFromNotification = new PhoneNotification();
+        phoneFromNotification.make(fromUser.getChanel(), fromUser.getPhone(), formNotification.getMessage());
         Notification toNotification = new Notification();
         toNotification.setUser(toUser);
         toNotification.setTitle("Biến động số dư");
         toNotification.setMessage("TK:" + toUser.getCard() + " +" + amount + "đ. ND:" + history.getMessage());
         notificationRepository.save(toNotification);
+        PhoneNotification phoneToNotification = new PhoneNotification();
+        phoneToNotification.make(toUser.getChanel(), toUser.getPhone(), toNotification.getMessage());
         model.addFlashAttribute("success", "Thành công !");
         return "redirect:/bank";
     }

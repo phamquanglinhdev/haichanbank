@@ -28,7 +28,7 @@ public class User {
     private String remember;
 
     private String role;
-    @Column(nullable = false,length = 10000000)
+    @Column(nullable = false, length = 10000000)
 
     private String avatar;
     @Column(nullable = false)
@@ -44,7 +44,16 @@ public class User {
     }
 
     private String callbackUrl;
+    @Column(nullable = false)
+    private String chanel;
 
+    public String getChanel() {
+        return chanel;
+    }
+
+    public void setChanel(String chanel) {
+        this.chanel = chanel;
+    }
 
     public String getToken() {
         return token;

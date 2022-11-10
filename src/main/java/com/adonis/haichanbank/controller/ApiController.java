@@ -1,5 +1,6 @@
 package com.adonis.haichanbank.controller;
 
+import com.adonis.haichanbank.dto.ElectronDto;
 import com.adonis.haichanbank.dto.NotificationDto;
 import com.adonis.haichanbank.dto.UserDto;
 import com.adonis.haichanbank.models.Notification;
@@ -86,7 +87,7 @@ public class ApiController {
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
         PhoneNotification phoneNotification = new PhoneNotification();
-        phoneNotification.make(newOtp.getPhone(), "HAICHANBANK OTP:" + newOtp.getOtp());
+        phoneNotification.make(currentUser.get().getChanel(), newOtp.getPhone(), "Mã OTP của bạn là:" + newOtp.getOtp() + ",tuyệt đối Không chia sẻ cho bất kỳ ai.");
         return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
 
     }
@@ -112,19 +113,12 @@ public class ApiController {
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
         PhoneNotification phoneNotification = new PhoneNotification();
-        phoneNotification.make(newOtp.getPhone(), "HAICHANBANK OTP:" + newOtp.getOtp());
+        phoneNotification.make("new-" + phone, newOtp.getPhone(), "Mã OTP của bạn là:" + newOtp.getOtp() + ",tuyệt đối KHÔNG chia sẻ cho bất kỳ ai.");
         return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
     }
 
     @GetMapping("create-payment")
-    public String createPayment(
-            @RequestParam String token,
-            @RequestParam String secret,
-            @RequestParam int amount,
-            @RequestParam String id,
-            @RequestParam String message,
-            @RequestParam(defaultValue = "Không có") String detail
-    ) {
+    public String createPayment(@RequestParam String token, @RequestParam int amount, @RequestParam String id, @RequestParam(defaultValue = "Không có") String message, @RequestParam(defaultValue = "Không có") String detail) {
         Payment payment = new Payment();
         payment.setStatus("pending");
         payment.setPaymentID(id);
@@ -136,6 +130,16 @@ public class ApiController {
         paymentRepository.save(payment);
         return "http:/localhost:8080/bank/payment?token=" + token + "&transaction=" + payment.getTransactionID();
     }
+
+    @GetMapping("check-payment")
+    public ResponseEntity<Payment> checkPayment(@RequestParam String transaction) {
+        Payment payment = paymentRepository.findByTransactionID(transaction);
+        if (payment == null) {
+            return ResponseEntity.status(400).body(null);
+        }
+        return ResponseEntity.status(200).body(payment);
+    }
+
 
     @Autowired
     NotificationRepository notificationRepository;
@@ -196,6 +200,21 @@ public class ApiController {
     @GetMapping("avatar")
     public ResponseEntity<String> changeAvatar() {
         return ResponseEntity.status(404).body(null);
+    }
+
+    @GetMapping("channel")
+    public ResponseEntity<ElectronDto> getChanelKey(@RequestParam String email, @RequestParam String password) {
+        ElectronDto electronDto = new ElectronDto();
+        User user = userServices.getUserByEmail(email);
+        if (user == null) {
+            return ResponseEntity.status(400).body(null);
+        }
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            return ResponseEntity.status(400).body(null);
+        }
+        electronDto.setChannel(user.getChanel());
+        electronDto.setPhone(user.getPhone());
+        return ResponseEntity.status(200).body(electronDto);
     }
 
 }

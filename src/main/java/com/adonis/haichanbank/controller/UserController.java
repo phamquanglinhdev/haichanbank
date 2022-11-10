@@ -164,4 +164,12 @@ public class UserController {
         model.addFlashAttribute("success", "Cập nhật thành công");
         return "redirect:/bank/user";
     }
+    @PostMapping("change-business-info")
+    public String changeBusinessInfo(@RequestParam String callback, RedirectAttributes model) {
+        User user = currentUser.get();
+        user.setCallbackUrl(callback);
+        userRepository.save(user);
+        model.addFlashAttribute("success", "Thay đổi thành công");
+        return "redirect:/bank/user";
+    }
 }

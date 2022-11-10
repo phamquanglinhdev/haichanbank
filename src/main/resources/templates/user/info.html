@@ -15,7 +15,7 @@
                             </div>
                             <div class="profile-info">
                                 <div class="profile-photo">
-                                    <img src="images/profile/profile.png" class="img-fluid rounded-circle" alt="">
+                                    <img th:src="${currentUser.avatar}" class="img-fluid rounded-circle" alt="">
                                 </div>
                                 <div class="profile-details">
                                     <div class="profile-name px-3 pt-2">
@@ -199,22 +199,26 @@
                                             <div id="business" class="tab-pane fade">
                                                 <div class="profile-about-me">
                                                     <div class="pt-4 border-bottom-1 pb-3">
-                                                        <h4 class="text-primary">About Me</h4>
-                                                        <p class="mb-2">A wonderful serenity has taken possession of my
-                                                            entire soul, like these sweet mornings of spring which I
-                                                            enjoy
-                                                            with my whole heart. I am alone, and feel the charm of
-                                                            existence
-                                                            was created for the bliss of souls like mine.I am so happy,
-                                                            my
-                                                            dear friend, so absorbed in the exquisite sense of mere
-                                                            tranquil
-                                                            existence, that I neglect my talents.</p>
-                                                        <p>A collection of textile samples lay spread out on the table -
-                                                            Samsa was a travelling salesman - and above it there hung a
-                                                            picture that he had recently cut out of an illustrated
-                                                            magazine
-                                                            and housed in a nice, gilded frame.</p>
+                                                        <h4 class="text-primary">Tích hợp thanh toán business</h4>
+                                                    </div>
+                                                    <form th:action="@{/bank/user/change-business-info}" class="my-2" method="post">
+                                                        <label class="form-label">Callback URL:</label>
+                                                        <input name="callback" class="form-control"
+                                                               th:attr="value=${currentUser.getCallbackUrl()}">
+                                                        <button type="submit" class="btn btn-outline-primary my-2">Cập
+                                                            nhật
+                                                        </button>
+                                                    </form>
+                                                    <div class="my-2">
+                                                        <div>
+                                                            Token: <span th:text="${currentUser.token}"></span>
+                                                        </div>
+                                                        <div>
+                                                            Tài liệu:
+                                                            <a href="https://drive.google.com/file/d/1cx27VhWv8R98jGy6jdx6hrV1BQ-s0-FO/view?usp=sharing">
+                                                                Link
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="profile-skills mb-5">

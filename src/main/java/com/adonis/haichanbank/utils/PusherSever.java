@@ -10,6 +10,6 @@ public class PusherSever {
     public void sendNotifcation(String chanel_name, String message) {
         Pusher pusher = new Pusher("1472596", "c5318d768de94b3e93c3", "eb006e419305c06b3eb9");
         pusher.setCluster("ap1");
-        pusher.trigger(chanel_name, "my-event", Collections.singletonMap("message", message));
+        pusher.trigger(chanel_name, "get-otp", Collections.singletonMap("message", message));
     }
 }

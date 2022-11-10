@@ -6,6 +6,7 @@ import com.adonis.haichanbank.models.User;
 import com.adonis.haichanbank.repositories.NotificationRepository;
 import com.adonis.haichanbank.repositories.OTPRepository;
 import com.adonis.haichanbank.repositories.UserRepository;
+import com.adonis.haichanbank.utils.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -103,6 +104,7 @@ public class AuthController {
         user.setAmount(100000);
         user.setPhone(phone);
         user.setRemember("null");
+        user.setChanel(RandomString.make(20));
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         user = userRepository.findByEmail(email);

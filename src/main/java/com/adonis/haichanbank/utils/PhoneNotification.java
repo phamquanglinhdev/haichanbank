@@ -8,15 +8,9 @@ import java.io.IOException;
 import static com.slack.api.webhook.WebhookPayloads.*;
 
 public class PhoneNotification {
-    public void make(String phone, String notification) throws IOException {
-        String webhookUrl = "https://hooks.slack.com/services/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";
-        Slack slack = Slack.getInstance();
-        WebhookResponse response = slack.send(webhookUrl, payload(
-                p -> p
-                        .text(notification)
-                        .username(phone)
-                        .iconUrl("https://haycafe.vn/wp-content/uploads/2022/02/Anh-gai-xinh-Viet-Nam.jpg")
+    public void make(String channel, String phone, String notification) {
 
-        ));
+        PusherSever pusherSever = new PusherSever();
+        pusherSever.sendNotifcation(channel, notification);
     }
 }

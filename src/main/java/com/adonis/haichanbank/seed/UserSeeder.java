@@ -37,10 +37,11 @@ public class UserSeeder {
             user.setName("Phạm Quang Linh");
             user.setEmail("phamquanglinhdev@gmail.com");
             user.setPassword(passwordEncoder.encode("Linhz123@"));
-            user.setAmount(10000);
+            user.setAmount(1000000000);
             user.setPhone("0904800240");
             user.setRole("admin");
             user.setRemember("AIDJASPOmoquwdq90sd");
+            user.setChanel(RandomString.make(15));
             user.setCard("9704 1801 " + midDigest + " " + LastDigest);
             user.setAvatar("https://cf.shopee.vn/file/aded53959846e8c6e6a9349f8afaf0fb");
             userRepository.save(user);
@@ -53,10 +54,11 @@ public class UserSeeder {
             user.setName("Nguyễn Văn A");
             user.setEmail("user1@gmail.com");
             user.setPassword(passwordEncoder.encode("Linhz123@"));
-            user.setAmount(10000);
+            user.setAmount(100000);
             user.setPhone("0909009009");
             user.setRole("user");
             user.setRemember("AIDJASPOmoquwdq90sd");
+            user.setChanel(RandomString.make(15));
             user.setCard("9704 1801 " + midDigest + " " + LastDigest);
             user.setAvatar("https://s199.imacdn.com/ta/2018/02/05/6f6b6137f1747a4d_8af7064721ba13bb_10643415178258735143215.jpg");
             userRepository.save(user);
@@ -70,12 +72,12 @@ public class UserSeeder {
             user.setName("Cửa hàng ABC");
             user.setEmail("business1@gmail.com");
             user.setPassword(passwordEncoder.encode("Linhz123@"));
-            user.setAmount(10000);
+            user.setAmount(1000000);
             user.setPhone("0897778337");
             user.setRole("bussiness");
             user.setRemember("AIDJASPOmoquwdq90sd");
             user.setCard("9704 1801 " + midDigest + " " + LastDigest);
-
+            user.setChanel(RandomString.make(15));
             user.setToken(RandomString.make(50));
             user.setCallbackUrl("https://laptrinhluon.com/callback");
             user.setAvatar("https://s199.imacdn.com/ta/2018/02/05/6f6b6137f1747a4d_8af7064721ba13bb_10643415178258735143215.jpg");
