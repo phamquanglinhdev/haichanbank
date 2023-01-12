@@ -80,6 +80,11 @@
             <artifactId>pusher-http-java</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>9.2.0</version>
+        </dependency>
     </dependencies>
 
     <build>

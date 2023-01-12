@@ -15,9 +15,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.Binding;
+import javax.persistence.EntityResult;
 import java.security.Principal;
 import java.text.NumberFormat;
 import java.util.Objects;
@@ -38,7 +42,11 @@ public class MoneyController {
     NotificationRepository notificationRepository;
 
     @PostMapping("transfer")
-    public String TransferMoney(@ModelAttribute History history, @RequestParam(name = "otp") String otp_code, RedirectAttributes model, Principal principal) {
+    public String TransferMoney(@ModelAttribute History history, BindingResult bindingResult, @RequestParam(name = "otp") String otp_code, RedirectAttributes model, Principal principal) throws BindException {
+        if (bindingResult.hasErrors()) {
+            model.addFlashAttribute("error", "Đã có lỗi xảy ra , vui lòng kiểm tra lại (VA)");
+            return "redirect:/bank";
+        }
         if (history.getTo() == null) {
             model.addFlashAttribute("error", "Không có người nhận");
             return "redirect:/bank";
@@ -72,7 +80,12 @@ public class MoneyController {
             model.addFlashAttribute("error", "Số tiền không đủ để chuyển khoản");
             return "redirect:/bank";
         }
-        fromUser.setAmount(fromUser.getAmount() - amount);
+        try {
+            fromUser.setAmount(fromUser.getAmount() - amount);
+        } catch (Exception exception) {
+            model.addFlashAttribute("error", "Vui lòng nhập số tiền !");
+            return "redirect:/bank";
+        }
         toUser.setAmount(toUser.getAmount() + amount);
         userRepository.save(fromUser);
         userRepository.save(toUser);
@@ -83,14 +96,14 @@ public class MoneyController {
         formNotification.setMessage("TK:" + fromUser.getCard() + " -" + amount + "đ. ND:" + history.getMessage());
         notificationRepository.save(formNotification);
         PhoneNotification phoneFromNotification = new PhoneNotification();
-        phoneFromNotification.make(fromUser.getChanel(), fromUser.getPhone(), formNotification.getMessage());
+        phoneFromNotification.physic(fromUser.getPhone(), formNotification.getMessage());
         Notification toNotification = new Notification();
         toNotification.setUser(toUser);
         toNotification.setTitle("Biến động số dư");
         toNotification.setMessage("TK:" + toUser.getCard() + " +" + amount + "đ. ND:" + history.getMessage());
         notificationRepository.save(toNotification);
         PhoneNotification phoneToNotification = new PhoneNotification();
-        phoneToNotification.make(toUser.getChanel(), toUser.getPhone(), toNotification.getMessage());
+        phoneToNotification.physic(toUser.getPhone(), toNotification.getMessage());
         model.addFlashAttribute("success", "Thành công !");
         return "redirect:/bank";
     }

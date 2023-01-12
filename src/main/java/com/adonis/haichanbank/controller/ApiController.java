@@ -87,7 +87,7 @@ public class ApiController {
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
         PhoneNotification phoneNotification = new PhoneNotification();
-        phoneNotification.make(currentUser.get().getChanel(), newOtp.getPhone(), "Mã OTP của bạn là:" + newOtp.getOtp() + ",tuyệt đối Không chia sẻ cho bất kỳ ai.");
+        phoneNotification.physic(newOtp.getPhone(), "Mã OTP của bạn là:" + newOtp.getOtp() + ",tuyệt đối Không chia sẻ cho bất kỳ ai.");
         return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
 
     }
@@ -113,7 +113,7 @@ public class ApiController {
         newOtp.setOtp("H-" + digest);
         otpRepository.save(newOtp);
         PhoneNotification phoneNotification = new PhoneNotification();
-        phoneNotification.make("new-" + phone, newOtp.getPhone(), "Mã OTP của bạn là:" + newOtp.getOtp() + ",tuyệt đối KHÔNG chia sẻ cho bất kỳ ai.");
+        phoneNotification.physic(newOtp.getPhone(), "Mã OTP của bạn là:" + newOtp.getOtp() + ",tuyệt đối KHÔNG chia sẻ cho bất kỳ ai.");
         return ResponseEntity.status(200).body("Mã OTP đã được gửi tới SĐT ");
     }
 
